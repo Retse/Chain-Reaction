@@ -43,9 +43,7 @@ function main() {
   };
 
   function buildGame() {
-    setTimeout(() => {
-      handleGameOver();
-    }, 2000);
+    game = new Game(mainContainerElement)
   }
 
   function destroyGame() {
