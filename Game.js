@@ -1,3 +1,5 @@
+'use strict'
+
 function Game(parentElement) {
   var self = this;
 
@@ -5,6 +7,10 @@ function Game(parentElement) {
   self.gameOverCallback = null;
 
   self._init();
+  self.loop();
+  setTimeout(function() {
+    self.gameOverCallback();
+  },3000);
 }
 
 Game.prototype._init = function () {
@@ -34,8 +40,8 @@ Game.prototype._init = function () {
   self.canvasParentElement = document.querySelector('.game__canvas');
   self.canvasElement = document.querySelector('.canvas');
 
-  self.pointsElement = self.gameElement.querySelector('.total points .value');
-  self.ballsElement = self.gameElement.querySelector('.balls expanded .value');
+  self.puntuacionElement = self.gameElement.querySelector('.puntuacion .value');
+  self.explosionesElement = self.gameElement.querySelector('.explosiones .value');
 
   self.width = self.canvasParentElement.clientWidth;
   self.height = self.canvasParentElement.clientHeight;
@@ -45,5 +51,33 @@ Game.prototype._init = function () {
 
   self.ctx = self.canvasElement.getContext('2d');
 }
+
+Game.prototype.loop = function() {
+  var self = this;
+  var player = new Player (self.canvasElement, 100, 100);
+  
+    player.draw();
+  
+}
+
+Game.prototype.destroy = function () {
+  var self = this;
+  self.gameElement.remove();
+} 
+
+Game.prototype.onOver = function (callback) {
+  var self = this;
+  self.gameOverCallback = callback;
+}
+
+Game.prototype._update = function ()  {
+  var self = this;
+
+  self.player.update();
+
+}
+
+
+
 
 

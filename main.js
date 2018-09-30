@@ -1,3 +1,5 @@
+'use strict'
+
 function buildDom(html) {
   var div = document.createElement('div');
   div.innerHTML = html;
@@ -12,7 +14,7 @@ function main() {
   var splashElement = null;
   var splashButton = null;
 
-  var handleSplashClick = function () {
+  function handleSplashClick () {
     destroySplash();
     buildGame();
   }
@@ -39,17 +41,20 @@ function main() {
   var game = null;
   var handleGameOver = function () {
     destroyGame();
-    buildGameover();
+    buildGameover(game.sumatorio);
   };
 
   function buildGame() {
     game = new Game(mainContainerElement)
+    game.onOver(handleGameOver)
+
   }
 
   function destroyGame() {
+    game.destroy();
   }
 
-  
+    
   // -- Gameover
   var gameoverElement = null;
   var gameoverButton = null;
@@ -59,10 +64,11 @@ function main() {
     buildGame();
   }
 
-  function buildGameover() {
+  function buildGameover(puntuacion) {
     gameoverElement = buildDom(`
       <main class="gameover container">
         <h1>Game Over</h1>
+        <p>Total Points: <span class="puntuacion"></span></p>
         <button>Restart</button>
       </main>
     `);
@@ -71,7 +77,10 @@ function main() {
     gameoverButton = document.querySelector('button');
     gameoverButton.addEventListener('click', handleGameoverClick);
 
-  }
+    var puntuacionElement = document.querySelector('.puntuacion');
+    puntuacionElement.innerText = puntuacion;
+
+    }
 
   function destroyGameover() {
     gameoverButton.removeEventListener('click', handleGameoverClick);
