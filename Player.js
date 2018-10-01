@@ -1,35 +1,42 @@
 'use strict'
 
-function Player(canvas, x, y) {
+function Player (canvas, x, y) {
   var self = this;
 
   self.x = x;
   self.y = y;
-  self.radius = 10;
+  self.radius = 45;
   self.size = 10;
   self.canvas = canvas;
   self.ctx = canvas.getContext('2d');
-
+ 
 }
 
 Player.prototype.draw = function() {
   var self = this;
 
+  self.ctx.beginPath();
+  self.ctx.strokeStyle = 'white';
   self.ctx.arc(self.x, self.y, self.radius, 0, 2 * Math.PI);
   self.ctx.stroke();
- 
 } 
 
-// Player.prototype.mouseMoveHandler = function(){
-//   var self = this;
+Player.prototype.colision = function(myBall) {
+  var self = this;
 
-//   var relativeX = e.clientX - canvas.offsetLeft;
-//     if(relativeX > 0 && relativeX < canvas.width) {
-//         playerX = relativeX - playerWidth/2;
-//     }
+  var dx = self.x - myBall.x;
+  var dy = self.y - myBall.y;
+  var distance = Math.sqrt(dx * dx + dy * dy);
 
-//     document.addEventListener("mousemove", mouseMoveHandler, false);
-// }
+  if (distance < self.radius + myBall.radius) {
+    return true;
+  }
+  return false;
+}
+
+
+
+
 
 
  

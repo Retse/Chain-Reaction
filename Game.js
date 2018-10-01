@@ -7,10 +7,10 @@ function Game(parentElement) {
   self.gameOverCallback = null;
 
   self._init();
-  self.loop();
-  setTimeout(function() {
-    self.gameOverCallback();
-  },3000);
+  self._startLoop()
+  // setTimeout(function() {
+  //   self.gameOverCallback();
+  // },3000);
 }
 
 Game.prototype._init = function () {
@@ -50,15 +50,85 @@ Game.prototype._init = function () {
   self.canvasElement.setAttribute('height', self.height);
 
   self.ctx = self.canvasElement.getContext('2d');
+
 }
 
-Game.prototype.loop = function() {
+Game.prototype._startLoop = function() {
   var self = this;
-  var player = new Player (self.canvasElement, 100, 100);
+  self.player = new Player (self.canvasElement, 100, 100);
+  self.balls = [];
+
+  self._createBalls();
+  console.log(self.balls)
   
-    player.draw();
+  self.handleMouseMove = function(event) {
+    var rect = self.canvasElement.getBoundingClientRect();
+    self.player.x = event.clientX - rect.left;
+    self.player.y = event.clientY - rect.top;
+    }
+    
+  self.canvasElement.addEventListener('mousemove', self.handleMouseMove)
   
+  self.handleMouseClick = function(event) {
+    var rect = self.canvasElement.getBoundingClientRect();
+    self.player.x = event.clientX - rect.left;
+    self.player.y = event.clientY - rect.top;
+
+    self.canvasElement.removeEventListener('mousemove', self.handleMouseMove)
+
+  }
+
+   self.canvasElement.addEventListener('click', self.handleMouseClick)
+   
+  function loop() {
+
+    self._clearAll();
+    self._updateAll();
+    self._drawAll();
+         
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+
 }
+
+Game.prototype._clearAll = function () {
+  var self = this;
+  self.ctx.clearRect(0, 0, self.width, self.height);
+}
+
+Game.prototype._updateAll = function () {
+  var self = this;
+
+  self.balls.forEach(function(item){
+    item.update();
+    console.log(self.player.colision(item));
+  });
+
+}
+
+Game.prototype._drawAll = function () {
+  var self = this;
+
+  self.player.draw();
+  self.balls.forEach(function(item){
+    item.draw();
+  });
+}
+
+Game.prototype._createBalls = function () {
+  var self = this;
+  var directions = [-1,1];
+  for (var i = 0; i < 15; i++){
+    var randomX = Math.random() * self.width * 0.9;
+    var randomY = Math.random() * self.height * 0.9;
+    var randomDX = Math.floor(Math.random()*2);
+    var randomDY = Math.floor(Math.random()*2);
+    self.balls.push(new Ball(self.canvasElement, randomX, randomY, directions[randomDX], directions[randomDY]));
+    console.log(self.balls)
+    }
+  }
 
 Game.prototype.destroy = function () {
   var self = this;
@@ -68,13 +138,6 @@ Game.prototype.destroy = function () {
 Game.prototype.onOver = function (callback) {
   var self = this;
   self.gameOverCallback = callback;
-}
-
-Game.prototype._update = function ()  {
-  var self = this;
-
-  self.player.update();
-
 }
 
 
