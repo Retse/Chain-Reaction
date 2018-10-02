@@ -8,9 +8,6 @@ function Game(parentElement) {
 
   self._init();
   self._startLoop()
-  // setTimeout(function() {
-  //   self.gameOverCallback();
-  // },3000);
 }
 
 Game.prototype._init = function () {
@@ -24,8 +21,8 @@ Game.prototype._init = function () {
           <span class="value"></span>
         </div>
         <h1>Chain Reaction</h1>
-        <div class="balls">
-          <span class="label">Balls Expanded: </span>
+        <div class="time">
+          <span class="label">Time Remaining: </span>
           <span class="value"></span>
         </div>
       </header>
@@ -40,8 +37,8 @@ Game.prototype._init = function () {
   self.canvasParentElement = document.querySelector('.game__canvas');
   self.canvasElement = document.querySelector('.canvas');
 
-  self.puntuacionElement = self.gameElement.querySelector('.puntuacion .value');
-  self.explosionesElement = self.gameElement.querySelector('.explosiones .value');
+  self.puntuacionElement = self.gameElement.querySelector('.points .value');
+  self.timeElement = self.gameElement.querySelector('.time .value');
 
   self.width = self.canvasParentElement.clientWidth;
   self.height = self.canvasParentElement.clientHeight;
@@ -57,6 +54,8 @@ Game.prototype._startLoop = function() {
   var self = this;
   self.player = new Player (self.canvasElement, 100, 100);
   self.balls = [];
+  self.playerTimeToLive = 5000;
+  self.isGameOver = false;
 
   self._createBalls();
     
@@ -64,7 +63,7 @@ Game.prototype._startLoop = function() {
     var rect = self.canvasElement.getBoundingClientRect();
     self.player.x = event.clientX - rect.left;
     self.player.y = event.clientY - rect.top;
-    }
+  }
     
   self.canvasElement.addEventListener('mousemove', self.handleMouseMove)
   
@@ -85,7 +84,7 @@ Game.prototype._startLoop = function() {
     self._updateAll();
     self._drawAll();
    
-    if (self._isPlayerAlive()) {
+    if (!self.isGameOver) {
       requestAnimationFrame(loop);
     } else {
       // game over
@@ -96,12 +95,6 @@ Game.prototype._startLoop = function() {
 
   requestAnimationFrame(loop);
 
-}
-
-Game.prototype._isPlayerAlive = function() {
-  var self = this;
-
-  return self.player.isAlive;
 }
 
 Game.prototype._clearAll = function () {
@@ -115,11 +108,12 @@ Game.prototype._updateAll = function () {
 
   self.balls.forEach(function(item){
     item.update();
-    self.player.colision(item);
-    if (self.player.colision(item)){
-      
-    }
   });
+
+  self._updateUI();
+
+  self._checkAllCollisions();
+  self._checkIfGameIsOver();
 
 }
 
@@ -138,15 +132,49 @@ Game.prototype._drawAll = function () {
 Game.prototype._createBalls = function () {
   var self = this;
   var directions = [-1,1];
-  for (var i = 0; i < 15 ; i++){
+  for (var i = 0; i < 18 ; i++){
     var randomX = Math.random() * self.width * 0.9;
     var randomY = Math.random() * self.height * 0.9;
     var randomDX = Math.floor(Math.random()*2);
     var randomDY = Math.floor(Math.random()*2);
-    self.balls.push(new Ball(self.canvasElement, randomX, randomY, directions[randomDX], directions[randomDY]));
-    
-    }
+    self.balls.push(new Ball(self.canvasElement, randomX, randomY, directions[randomDX], directions[randomDY],i));
   }
+}
+
+Game.prototype._updateUI = function () {
+  var self = this;
+  self.timeElement.innerText = self._getTime();
+}
+
+Game.prototype._getTime = function () {
+  var self = this;
+  if (self.player.isFixed) {  
+    var currentTime = Date.now();
+    var timeConsumed = currentTime - self.player.timestamp;
+    var finalTime = self.playerTimeToLive - timeConsumed;
+    return Math.floor(finalTime/1000);
+  }
+  return Math.floor(self.playerTimeToLive / 1000);
+}
+
+Game.prototype._checkAllCollisions = function () {
+  var self = this;
+
+  self.balls.forEach(function (item, idx) {
+    if (self.player.colision(item)) {
+      self.balls.splice(idx, 1);
+      self.playerTimeToLive += 1000;
+    }
+  });
+}
+
+Game.prototype._checkIfGameIsOver = function () {
+  var self = this;
+  var currentTime = Date.now();
+  if (self.player.isFixed && currentTime - self.player.timestamp > self.playerTimeToLive) {
+    self.isGameOver = true;
+  }
+}
 
 Game.prototype.destroy = function () {
   var self = this;

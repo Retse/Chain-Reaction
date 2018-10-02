@@ -1,6 +1,6 @@
 'use strict'
 
-function Ball(canvas, x, y, dx, dy) {
+function Ball(canvas, x, y, dx, dy, number) {
   var self = this;
 
   self.x = x;
@@ -10,11 +10,12 @@ function Ball(canvas, x, y, dx, dy) {
   self.color;
   self.radius = 7;
   self.size = 7;
-  self.speed = 2.5;
+  self.speed = 1.5;
   self.canvas = canvas;
   self.maxHeight = canvas.height;
   self.maxWidth = canvas.width;
   self.ctx = canvas.getContext('2d');
+  self.number = number;
       
 }
 
@@ -32,12 +33,10 @@ Ball.prototype.draw = function() {
 Ball.prototype.update = function () {
   var self = this;
 
-
   self.x = self.x + (self.speed * self.dx);
   self.y = self.y + (self.speed * self.dy);
 
   self._checkLimits();
-
 }
 
 Ball.prototype._checkLimits = function () {
@@ -50,8 +49,6 @@ var self = this;
 
   if (self.y + self.radius > self.maxHeight || self.y - self.radius < 0 ) {
     self.dy = self.dy * -1;
-  
-
   }
 };
 

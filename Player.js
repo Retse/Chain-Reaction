@@ -10,45 +10,48 @@ function Player (canvas, x, y) {
   self.canvas = canvas;
   self.ctx = canvas.getContext('2d');
   self.isAlive = true;
- 
+  self.time = 3000;
+  self.img = new Image();
+  self.isFixed = false;
+  self.timestamp = 0;
 }
 
 Player.prototype.draw = function() {
   var self = this;
 
   self.ctx.beginPath();
-  self.ctx.strokeStyle = 'white';
+  self.ctx.strokeStyle = 'transparent';
   self.ctx.arc(self.x, self.y, self.radius, 0, 2 * Math.PI);
   self.ctx.stroke();
+
+  self.img.src = "imagenes/luna_ok.png"
+
+  self.ctx.drawImage(self.img, self.x - self.radius, self.y - self.radius);
 } 
 
 Player.prototype.colision = function(myBall) {
   var self = this;
 
-  var dx = (self.x + self.radius) - (myBall.x + myBall.radius);
-  var dy = (self.y + self.radius) - (myBall.y + myBall.radius);
-  var distance = Math.sqrt(dx * dx + dy * dy);
-  if (distance < self.radius + myBall.radius) {
-      return true;
+  if (self.isFixed) {
+    var dx = (self.x) - (myBall.x );
+    var dy = (self.y) - (myBall.y );
+    var distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance < self.radius + myBall.radius) {
+        return true;
+    }
+    return false;
   }
-  return false;
 }
 
 Player.prototype.killMe = function(){
   var self = this;
 
-  setTimeout(function(){ 
-    self.isAlive = false;
-  }, 5000);
-  }
-
-  
+  self.isFixed = true;
+  self.timestamp = Date.now();
+}
 
 Player.prototype.clearPlayer = function(){
   var self = this;
-
-
-
 }
 
 
