@@ -18,14 +18,6 @@ function Ball(canvas, x, y, dx, dy) {
       
 }
 
-// Ball.states = {
-//   NORMAL: 'normal',
-//   EXPANDING: 'expanding',
-//   OPEN: 'open',
-//   CONTRACTING: 'contracting',
-//   CLOSED: 'closed'
-// };
-
 Ball.prototype.draw = function() {
   var self = this;
   
@@ -50,15 +42,15 @@ Ball.prototype.update = function () {
 
 Ball.prototype._checkLimits = function () {
 var self = this;
-  console.log(self.maxHeight, self.maxWidth)
+  
   if (self.x + self.radius > self.maxWidth || self.x - self.radius < 0) {
     self.dx = self.dx * -1;
-    console.log('happend')
+    
   } 
 
   if (self.y + self.radius > self.maxHeight || self.y - self.radius < 0 ) {
     self.dy = self.dy * -1;
-    console.log('happend Y')
+  
 
   }
 };

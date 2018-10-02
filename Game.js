@@ -59,8 +59,7 @@ Game.prototype._startLoop = function() {
   self.balls = [];
 
   self._createBalls();
-  console.log(self.balls)
-  
+    
   self.handleMouseMove = function(event) {
     var rect = self.canvasElement.getBoundingClientRect();
     self.player.x = event.clientX - rect.left;
@@ -75,7 +74,7 @@ Game.prototype._startLoop = function() {
     self.player.y = event.clientY - rect.top;
 
     self.canvasElement.removeEventListener('mousemove', self.handleMouseMove)
-
+    self.player.killMe();
   }
 
    self.canvasElement.addEventListener('click', self.handleMouseClick)
@@ -85,17 +84,30 @@ Game.prototype._startLoop = function() {
     self._clearAll();
     self._updateAll();
     self._drawAll();
-         
-    requestAnimationFrame(loop);
+   
+    if (self._isPlayerAlive()) {
+      requestAnimationFrame(loop);
+    } else {
+      // game over
+      self.gameOverCallback();
+    }
+    
   }
 
   requestAnimationFrame(loop);
 
 }
 
+Game.prototype._isPlayerAlive = function() {
+  var self = this;
+
+  return self.player.isAlive;
+}
+
 Game.prototype._clearAll = function () {
   var self = this;
   self.ctx.clearRect(0, 0, self.width, self.height);
+
 }
 
 Game.prototype._updateAll = function () {
@@ -103,7 +115,10 @@ Game.prototype._updateAll = function () {
 
   self.balls.forEach(function(item){
     item.update();
-    console.log(self.player.colision(item));
+    self.player.colision(item);
+    if (self.player.colision(item)){
+      
+    }
   });
 
 }
@@ -111,22 +126,25 @@ Game.prototype._updateAll = function () {
 Game.prototype._drawAll = function () {
   var self = this;
 
-  self.player.draw();
   self.balls.forEach(function(item){
     item.draw();
   });
+
+  if (self.player.isAlive) {
+    self.player.draw();
+  }
 }
 
 Game.prototype._createBalls = function () {
   var self = this;
   var directions = [-1,1];
-  for (var i = 0; i < 15; i++){
+  for (var i = 0; i < 15 ; i++){
     var randomX = Math.random() * self.width * 0.9;
     var randomY = Math.random() * self.height * 0.9;
     var randomDX = Math.floor(Math.random()*2);
     var randomDY = Math.floor(Math.random()*2);
     self.balls.push(new Ball(self.canvasElement, randomX, randomY, directions[randomDX], directions[randomDY]));
-    console.log(self.balls)
+    
     }
   }
 
@@ -139,6 +157,7 @@ Game.prototype.onOver = function (callback) {
   var self = this;
   self.gameOverCallback = callback;
 }
+
 
 
 

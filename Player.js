@@ -9,6 +9,7 @@ function Player (canvas, x, y) {
   self.size = 10;
   self.canvas = canvas;
   self.ctx = canvas.getContext('2d');
+  self.isAlive = true;
  
 }
 
@@ -24,16 +25,31 @@ Player.prototype.draw = function() {
 Player.prototype.colision = function(myBall) {
   var self = this;
 
-  var dx = self.x - myBall.x;
-  var dy = self.y - myBall.y;
+  var dx = (self.x + self.radius) - (myBall.x + myBall.radius);
+  var dy = (self.y + self.radius) - (myBall.y + myBall.radius);
   var distance = Math.sqrt(dx * dx + dy * dy);
-
   if (distance < self.radius + myBall.radius) {
-    return true;
+      return true;
   }
   return false;
 }
 
+Player.prototype.killMe = function(){
+  var self = this;
+
+  setTimeout(function(){ 
+    self.isAlive = false;
+  }, 5000);
+  }
+
+  
+
+Player.prototype.clearPlayer = function(){
+  var self = this;
+
+
+
+}
 
 
 
