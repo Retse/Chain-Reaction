@@ -10,13 +10,13 @@ function Ball(canvas, x, y, dx, dy, number) {
   self.color;
   self.radius = 7;
   self.size = 7;
-  self.speed = 1.5;
+  self.speed = 2;
   self.canvas = canvas;
   self.maxHeight = canvas.height;
   self.maxWidth = canvas.width;
   self.ctx = canvas.getContext('2d');
   self.number = number;
-      
+          
 }
 
 Ball.prototype.draw = function() {

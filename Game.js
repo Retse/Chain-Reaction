@@ -6,6 +6,8 @@ function Game(parentElement) {
   self.parentElement = parentElement;
   self.gameOverCallback = null;
 
+  self.totalPoints = 0;
+
   self._init();
   self._startLoop()
 }
@@ -37,7 +39,7 @@ Game.prototype._init = function () {
   self.canvasParentElement = document.querySelector('.game__canvas');
   self.canvasElement = document.querySelector('.canvas');
 
-  self.puntuacionElement = self.gameElement.querySelector('.points .value');
+  self.pointsElement = self.gameElement.querySelector('.points .value');
   self.timeElement = self.gameElement.querySelector('.time .value');
 
   self.width = self.canvasParentElement.clientWidth;
@@ -144,6 +146,7 @@ Game.prototype._createBalls = function () {
 Game.prototype._updateUI = function () {
   var self = this;
   self.timeElement.innerText = self._getTime();
+  self.pointsElement.innerText = self.totalPoints;
 }
 
 Game.prototype._getTime = function () {
@@ -157,6 +160,7 @@ Game.prototype._getTime = function () {
   return Math.floor(self.playerTimeToLive / 1000);
 }
 
+
 Game.prototype._checkAllCollisions = function () {
   var self = this;
 
@@ -164,6 +168,7 @@ Game.prototype._checkAllCollisions = function () {
     if (self.player.colision(item)) {
       self.balls.splice(idx, 1);
       self.playerTimeToLive += 1000;
+      self.totalPoints += 50;
     }
   });
 }

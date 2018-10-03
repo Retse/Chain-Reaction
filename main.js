@@ -78,7 +78,7 @@ function main() {
     gameoverButton.addEventListener('click', handleGameoverClick);
 
     var puntuacionElement = document.querySelector('.puntuacion');
-    puntuacionElement.innerText = puntuacion;
+    puntuacionElement.innerText = game.totalPoints;
 
     }
 
