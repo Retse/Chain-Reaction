@@ -24,9 +24,8 @@ Player.prototype.draw = function() {
   self.ctx.arc(self.x, self.y, self.radius, 0, 2 * Math.PI);
   self.ctx.stroke();
 
-  self.img.src = "imagenes/luna_ok.png"
-
-  self.ctx.drawImage(self.img, self.x - self.radius, self.y - self.radius);
+  self.img.src = "imagenes/luna_nueva.png"
+  self.ctx.drawImage(self.img, self.x - self.radius, self.y - self.radius, 100, 100);
 } 
 
 Player.prototype.colision = function(myBall) {

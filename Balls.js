@@ -1,6 +1,6 @@
 'use strict'
 
-function Ball(canvas, x, y, dx, dy, number) {
+function Ball(canvas, x, y, dx, dy) {
   var self = this;
 
   self.x = x;
@@ -15,7 +15,7 @@ function Ball(canvas, x, y, dx, dy, number) {
   self.maxHeight = canvas.height;
   self.maxWidth = canvas.width;
   self.ctx = canvas.getContext('2d');
-  self.number = number;
+  self.img = new Image();
           
 }
 
@@ -23,12 +23,16 @@ Ball.prototype.draw = function() {
   var self = this;
   
   self.ctx.beginPath();
-  self.ctx.strokeStyle = 'white';
+  self.ctx.strokeStyle = 'transparent';
   self.ctx.arc(self.x, self.y, self.radius, 0, 2 * Math.PI);
   self.ctx.stroke();
   self.ctx.fillStyle = 'white';
   self.ctx.fill();
 
+  self.img.src = "imagenes/meteorito_1.png"
+
+  self.ctx.drawImage(self.img, self.x - self.radius*1.5, self.y - self.radius*1.5, 20,20);
+  
 } 
 
 Ball.prototype.update = function () {
