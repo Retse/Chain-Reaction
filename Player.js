@@ -10,7 +10,7 @@ function Player (canvas, x, y) {
   self.canvas = canvas;
   self.ctx = canvas.getContext('2d');
   self.isAlive = true;
-  self.time = 3000;
+  self.time = 0;
   self.img = new Image();
   self.isFixed = false;
   self.timestamp = 0;

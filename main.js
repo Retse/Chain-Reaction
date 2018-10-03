@@ -22,8 +22,10 @@ function main() {
   function buildSplash() {
     splashElement = buildDom(`
       <main class="splash container">
-        <h1 class="splash__title">Chain Reaction</h1>
-        <button>Start</button>
+        <h1 class="splash__title">Space Reaction</h1>
+        <p>Leave the moon at a fixed point on the screen, where it would make the maximum collisions before the counter reaches 0.
+        <b>Good luck!</b></p>
+        <button>START</button>
       </main>
     `)
     mainContainerElement.appendChild(splashElement);
@@ -69,7 +71,7 @@ function main() {
       <main class="gameover container">
         <h1>Game Over</h1>
         <p>Total Points: <span class="puntuacion"></span></p>
-        <button>Restart</button>
+        <button>PLAY AGAIN</button>
       </main>
     `);
     mainContainerElement.appendChild(gameoverElement);

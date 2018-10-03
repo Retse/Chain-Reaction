@@ -22,7 +22,7 @@ Game.prototype._init = function () {
           <span class="label">Total Points: </span>
           <span class="value"></span>
         </div>
-        <h1>Chain Reaction</h1>
+        <h1>Space Reaction</h1>
         <div class="time">
           <span class="label">Time Remaining: </span>
           <span class="value"></span>
@@ -32,7 +32,7 @@ Game.prototype._init = function () {
         <canvas class="canvas"></canvas>
       </div>
     </main>
-  `)
+   `)
 
   self.parentElement.appendChild(self.gameElement);
 
@@ -134,7 +134,7 @@ Game.prototype._drawAll = function () {
 Game.prototype._createBalls = function () {
   var self = this;
   var directions = [-1,1];
-  for (var i = 0; i < 18 ; i++){
+  for (var i = 0; i < 20 ; i++){
     var randomX = Math.random() * self.width * 0.9;
     var randomY = Math.random() * self.height * 0.9;
     var randomDX = Math.floor(Math.random()*2);
@@ -164,11 +164,13 @@ Game.prototype._getTime = function () {
 Game.prototype._checkAllCollisions = function () {
   var self = this;
 
+  var sound = new Audio('boom.mp3');
   self.balls.forEach(function (item, idx) {
     if (self.player.colision(item)) {
       self.balls.splice(idx, 1);
       self.playerTimeToLive += 1000;
       self.totalPoints += 50;
+      sound.play();
     }
   });
 }

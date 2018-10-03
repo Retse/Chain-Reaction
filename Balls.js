@@ -10,7 +10,7 @@ function Ball(canvas, x, y, dx, dy, number) {
   self.color;
   self.radius = 7;
   self.size = 7;
-  self.speed = 2;
+  self.speed = 1.5;
   self.canvas = canvas;
   self.maxHeight = canvas.height;
   self.maxWidth = canvas.width;
@@ -28,6 +28,7 @@ Ball.prototype.draw = function() {
   self.ctx.stroke();
   self.ctx.fillStyle = 'white';
   self.ctx.fill();
+
 } 
 
 Ball.prototype.update = function () {
