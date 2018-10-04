@@ -89,7 +89,7 @@ canvas {
   text-align: center;
   background-size: cover; 
   border: none;
-  background-image: url('../Chain-Reaction/imagenes/urano2.png');
+  background-image: url('./imagenes/urano2.png');
   padding: 0;
   border-radius: 50%;
   font-family: 'Audiowide', cursive;
