@@ -16,21 +16,13 @@ function Ball(canvas, x, y, dx, dy) {
   self.maxWidth = canvas.width;
   self.ctx = canvas.getContext('2d');
   self.img = new Image();
-          
+  self.img.src = "imagenes/meteorito_1.png"
+    
 }
 
 Ball.prototype.draw = function() {
   var self = this;
   
-  self.ctx.beginPath();
-  self.ctx.strokeStyle = 'transparent';
-  self.ctx.arc(self.x, self.y, self.radius, 0, 2 * Math.PI);
-  self.ctx.stroke();
-  self.ctx.fillStyle = 'white';
-  self.ctx.fill();
-
-  self.img.src = "imagenes/meteorito_1.png"
-
   self.ctx.drawImage(self.img, self.x - self.radius*1.5, self.y - self.radius*1.5, 20,20);
   
 } 

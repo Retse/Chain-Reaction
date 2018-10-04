@@ -7,6 +7,8 @@ function Game(parentElement) {
   self.gameOverCallback = null;
 
   self.totalPoints = 0;
+  self.sound = new Audio('boom.mp3');
+
 
   self._init();
   self._startLoop()
@@ -164,13 +166,13 @@ Game.prototype._getTime = function () {
 Game.prototype._checkAllCollisions = function () {
   var self = this;
 
-  var sound = new Audio('boom.mp3');
   self.balls.forEach(function (item, idx) {
     if (self.player.colision(item)) {
+      self.sound.currentTime = 0;
       self.balls.splice(idx, 1);
       self.playerTimeToLive += 1000;
       self.totalPoints += 50;
-      sound.play();
+      self.sound.play();
     }
   });
 }
@@ -178,10 +180,13 @@ Game.prototype._checkAllCollisions = function () {
 Game.prototype._checkIfGameIsOver = function () {
   var self = this;
   var currentTime = Date.now();
-  if (self.player.isFixed && currentTime - self.player.timestamp > self.playerTimeToLive) {
+  if (self.player.isFixed && (currentTime - self.player.timestamp > self.playerTimeToLive || self.balls.length === 0)) {
     self.isGameOver = true;
+
+   }
+
   }
-}
+  
 
 Game.prototype.destroy = function () {
   var self = this;

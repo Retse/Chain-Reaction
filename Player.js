@@ -14,17 +14,12 @@ function Player (canvas, x, y) {
   self.img = new Image();
   self.isFixed = false;
   self.timestamp = 0;
+  self.img.src = "imagenes/luna_nueva.png"
 }
 
 Player.prototype.draw = function() {
   var self = this;
 
-  self.ctx.beginPath();
-  self.ctx.strokeStyle = 'transparent';
-  self.ctx.arc(self.x, self.y, self.radius, 0, 2 * Math.PI);
-  self.ctx.stroke();
-
-  self.img.src = "imagenes/luna_nueva.png"
   self.ctx.drawImage(self.img, self.x - self.radius, self.y - self.radius, 100, 100);
 } 
 
@@ -47,10 +42,6 @@ Player.prototype.killMe = function(){
 
   self.isFixed = true;
   self.timestamp = Date.now();
-}
-
-Player.prototype.clearPlayer = function(){
-  var self = this;
 }
 
 
